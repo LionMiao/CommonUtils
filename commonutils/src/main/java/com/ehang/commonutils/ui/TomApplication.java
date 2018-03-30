@@ -1,4 +1,4 @@
-package com.ehang.commonutils;
+package com.ehang.commonutils.ui;
 
 import android.app.Activity;
 import android.app.Application;
