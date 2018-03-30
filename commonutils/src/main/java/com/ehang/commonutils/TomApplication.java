@@ -23,10 +23,22 @@ public class TomApplication extends Application {
         registerTopActivityChangedListener();
     }
 
+    /**
+     * 获取全局的应用上下文
+     *
+     * @return 当前App的上下文
+     * @see Application#getApplicationContext()
+     */
     public Context getContext() {
         return context;
     }
 
+    /**
+     * 获取当前栈顶的Activity，方便使用需要Activity对象的方法，如Toast等
+     * <p> 如果当前栈顶Activity销毁，且无其他Activity调用OnResume方法，则获取不到Activity对象，所有使用前必须判空
+     *
+     * @return 栈顶的Activity，如销毁则返回null
+     */
     public Activity getTopActivity() {
         return topActivity;
     }
@@ -50,9 +62,7 @@ public class TomApplication extends Application {
 
             @Override
             public void onActivityPaused(Activity activity) {
-                if (topActivity == activity) {
-                    topActivity = null;
-                }
+
             }
 
             @Override
@@ -67,7 +77,9 @@ public class TomApplication extends Application {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-
+                if (topActivity != null && activity.getClass().getSimpleName().equals(topActivity.getClass().getSimpleName())) {
+                    topActivity = null;
+                }
             }
         });
     }
