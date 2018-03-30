@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
+import java.lang.ref.SoftReference;
+
 /**
  * 通用的Application,包含以下功能
  * <p>1.管理、获取当前处于顶层的Activity
@@ -14,12 +16,12 @@ import android.os.Bundle;
 
 public class TomApplication extends Application {
     private Activity topActivity;
-    private Context context;
+    private static SoftReference<Context> contextSoftReference;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
+        contextSoftReference = new SoftReference<>(getContext());
         registerTopActivityChangedListener();
     }
 
@@ -29,8 +31,8 @@ public class TomApplication extends Application {
      * @return 当前App的上下文
      * @see Application#getApplicationContext()
      */
-    public Context getContext() {
-        return context;
+    public static Context getContext() {
+        return contextSoftReference.get();
     }
 
     /**
@@ -39,8 +41,8 @@ public class TomApplication extends Application {
      *
      * @return 栈顶的Activity，如销毁则返回null
      */
-    public Activity getTopActivity() {
-        return topActivity;
+    public static Activity getTopActivity() {
+        return ((TomApplication) getContext()).topActivity;
     }
 
     private void registerTopActivityChangedListener() {
