@@ -484,7 +484,7 @@ public final class ShellFeatureConfig {
      *  2: 打印到文件
      *  3: 打印到Log cat 以及文件
      */
-    public static  int ENABLE_JAVE_LOG_TYPE = 1;
+    public static  int ENABLE_JAVA_LOG_TYPE = 1;
 
     /**
      * 设置Log 的级别, 打印当前设置Log级别以及以上级别的Log

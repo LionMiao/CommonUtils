@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
+import com.ehang.commonutils.exception.NullArgumentException;
 
 import java.lang.ref.SoftReference;
 
@@ -16,12 +20,13 @@ import java.lang.ref.SoftReference;
 
 public class TomApplication extends Application {
     private Activity topActivity;
+    private static Handler mHandler = new Handler();
     private static SoftReference<Context> contextSoftReference;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        contextSoftReference = new SoftReference<>(getContext());
+        contextSoftReference = new SoftReference<>(this);
         registerTopActivityChangedListener();
     }
 
@@ -32,6 +37,9 @@ public class TomApplication extends Application {
      * @see Application#getApplicationContext()
      */
     public static Context getContext() {
+        if (contextSoftReference == null) {
+            throw new NullArgumentException("请在Application中继承TomApplication，并调用CommonUtils.init()初始化commonutils库");
+        }
         return contextSoftReference.get();
     }
 
@@ -43,6 +51,21 @@ public class TomApplication extends Application {
      */
     public static Activity getTopActivity() {
         return ((TomApplication) getContext()).topActivity;
+    }
+
+    /**
+     * 强制在主线程执行操作
+     *
+     * @param runnable 待执行的操作
+     */
+    public static void runOnUiThread(Runnable runnable) {
+        if (runnable != null) {
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                runnable.run();
+            } else {
+                mHandler.post(runnable);
+            }
+        }
     }
 
     private void registerTopActivityChangedListener() {
@@ -85,5 +108,4 @@ public class TomApplication extends Application {
             }
         });
     }
-
 }

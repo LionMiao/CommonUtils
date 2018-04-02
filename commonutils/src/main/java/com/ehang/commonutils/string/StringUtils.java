@@ -5,8 +5,8 @@
  */
 package com.ehang.commonutils.string;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
-
 
 import com.ehang.commonutils.codec.CodecUtil;
 import com.ehang.commonutils.io.IOUtil;
@@ -18,7 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +29,7 @@ import java.util.regex.Pattern;
  * <p/>
  */
 public final class StringUtils {
-    private static final String TIME_FORMAT_STRING = "yyyy-MM-dd HH:mm ";
+    private static final String TIME_FORMAT_STRING = "yyyy-MM-dd HH:mm:ss.FFF";
 
     /**
      * 判断数组是否为空，null或者长度为0都为空
@@ -1329,12 +1328,12 @@ public final class StringUtils {
     /**
      * long型时间转成格式化字符串
      *
-     * @param time
-     * @return
+     * @param time 大多数情况下应为{@link System#currentTimeMillis()}
+     * @return {@link StringUtils#TIME_FORMAT_STRING}格式化以后的时间如2018-04-02 11:21:23:850
      */
+    @SuppressLint("SimpleDateFormat")
     public static String formatTime(long time) {
-        SimpleDateFormat formatter = new SimpleDateFormat(TIME_FORMAT_STRING);
-        return formatter.format(new Date(time));
+        return new SimpleDateFormat(TIME_FORMAT_STRING).format(time);
     }
 
     /**

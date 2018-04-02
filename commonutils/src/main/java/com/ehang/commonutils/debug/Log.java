@@ -1,345 +1,202 @@
-/**
- * ******************************************************************
- * Copyright (C) 2005-2014 UC Mobile Limited. All Rights Reserved
- * File        : Log.java
- * Description : API for sending log output. Instead of android.util.Log,
- * this provides on/off switch at runtime.
- * Creation    : 2014/10/13
- * Author      : hejy3@ucweb.com
- * History     :
- * Creation, 2014/10/13, Young, Create the file
- *******************************************************************/
-
 package com.ehang.commonutils.debug;
-
-import android.os.Environment;
-
-
-import com.ehang.commonutils.config.ShellFeatureConfig;
-
-import java.io.File;
 
 /**
  * UC 自定义log, 可以根据打包开关设置log 使用 文件log的时候需要注意, log 会自动保存到文件当中,但是
  */
 public class Log {
-
     /**
      * Log级别定义
      */
-    final private static int LOG_VERBOSE = 0; // verbose级别
-    final private static int LOG_DEBUG = 1; // debug级别
-    final private static int LOG_INFO = 2; // info 级别
-    final private static int LOG_WARNING = 3; // warning 级别
-    final private static int LOG_ERROR = 4; // error级别
+    public final static int LOG_VERBOSE = 0; // verbose级别
+    public final static int LOG_DEBUG = 1; // debug级别
+    public final static int LOG_INFO = 2; // info 级别
+    public final static int LOG_WARNING = 3; // warning 级别
+    public final static int LOG_ERROR = 4; // error级别
 
     /**
      * Log 输出的方式
      */
-    final private static int TYPE_LOG_TO_LOGCAT = 1;
-    final private static int TYPE_LOG_TO_FILE = 2;
+    public final static int TYPE_LOG_TO_LOGCAT = 1;
+    public final static int TYPE_LOG_TO_FILE = 2;
+
+
+    private static int logType = TYPE_LOG_TO_LOGCAT;
+    private static int logLevel = LOG_VERBOSE;
 
     private static byte[] mLock = new byte[0];
     private static DebugLogger mLogger;
 
     /**
-     * 获取log 的类型
-     *
-     * @return
+     * 获取log输出位置
      */
-    public static int GetLogType() {
-        return ShellFeatureConfig.ENABLE_JAVE_LOG_TYPE;
+    public static int getLogType() {
+        return logType;
     }
 
     /**
-     * 设置log 的类型
-     *
-     * @param logType
+     * 设置log输出的位置,0:关闭，1：输出到控制台，2：输出到文件，3：同时输出到文件和控制台
      */
-    public static void SetLogtype(int logType) {
-        ShellFeatureConfig.ENABLE_JAVE_LOG_TYPE = logType;
-        init();
+    public static void setLogType(int logType) {
+        Log.logType = logType;
+        if (TYPE_LOG_TO_FILE == (TYPE_LOG_TO_FILE & getLogType())) {
+            mLogger = new DebugLogger();
+        }
+    }
+
+    /**
+     * 设置log的输出级别
+     *
+     * @param logLevel {@link Log#LOG_VERBOSE}
+     *                 {@link Log#LOG_DEBUG}
+     *                 {@link Log#LOG_INFO}
+     *                 {@link Log#LOG_WARNING}
+     *                 {@link Log#LOG_ERROR}
+     */
+    public static void setLogLevel(int logLevel) {
+        Log.logLevel = logLevel;
+    }
+
+    /**
+     * 获取log输出级别
+     */
+    public static int getLogLevel() {
+        return logLevel;
+    }
+
+    /**
+     * 设置日志路径和日志文件名
+     */
+    public void setLogPathAndFileName(String path, String fileName) {
+        if (null == mLogger) {
+            mLogger = new DebugLogger();
+        }
+        mLogger.setLogPathAndFileName(path, fileName);
     }
 
     /**
      * 将Log写到文件当中
-     *
-     * @param strLog
      */
-    private static void writeToFile(String strLog) {
-        synchronized (mLock) {
-            if (null == mLogger) {
-                initFileLog("ucm");
-            }
-            mLogger.writeLog(strLog);
+    private synchronized static void writeToFile(String strLog) {
+        if (null == mLogger) {
+            mLogger = new DebugLogger();
+        }
+        mLogger.writeLog(strLog);
+    }
+
+    public static void v(String msg) {
+        v(null, msg);
+    }
+
+    public static void v(String tag, String msg) {
+        v(tag, msg, null);
+    }
+
+    public static void v(String tag, String msg, Throwable tr) {
+        if (null == msg || getLogLevel() > LOG_VERBOSE) {
+            return;
+        }
+        if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
+            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+        }
+        if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
+            android.util.Log.println(android.util.Log.VERBOSE, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
     }
 
-    /**
-     * 初始化文件 log
-     *
-     * @param fileName 初始化的文件名
-     * @remark 默认会 保存到 sdcard/UCDownloads/ucm.log 中
-     */
-    private static void initFileLog(String fileName) {
-
-        mLogger = new DebugLogger();
-        String filePath = Environment.getExternalStorageDirectory().getPath() + "/UCDownloads/";
-        File file = new File(filePath + fileName);
-        int index = 0;
-        while (file.exists()) {
-            fileName = fileName + index;
-            file = new File(filePath + fileName);
-            index++;
-        }
-        mLogger.setLogPathAndFileName(filePath, fileName + ".log");
-        mLogger.setMaxLinesForFlush(50);
-
+    public static void d(String msg) {
+        d(null, msg);
     }
 
-    /**
-     * 如果需要输出到文件, 则需要初始化
-     */
-    public static void init() {
-        if (TYPE_LOG_TO_FILE == (TYPE_LOG_TO_FILE & GetLogType())) {
-            initFileLog("ucm");
+    public static void d(String tag, String msg) {
+        d(tag, msg, null);
+    }
+
+    public static void d(String tag, String msg, Throwable tr) {
+        if (null == msg || getLogLevel() > LOG_DEBUG) {
+            return;
+        }
+        if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
+            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+        }
+        if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
+            android.util.Log.println(android.util.Log.DEBUG, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
     }
 
-    /**
-     * 获取当前Log 级别
-     *
-     * @return
-     */
-    public static int GetLogLevel() {
-        return ShellFeatureConfig.JAVA_LOG_LEVEL;
+    public static void i(String msg) {
+        i(null, msg);
     }
 
-    public static void SetLogLevel(int level) {
-        ShellFeatureConfig.JAVA_LOG_LEVEL = level;
+    public static void i(String tag, String msg) {
+        i(tag, msg, null);
     }
 
-    public static String getStackTraceString(Throwable tr) {
-        return android.util.Log.getStackTraceString(tr);
+    public static void i(String tag, String msg, Throwable tr) {
+        if (null == msg || getLogLevel() > LOG_INFO) {
+            return;
+        }
+        if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
+            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+        }
+        if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
+            android.util.Log.println(android.util.Log.INFO, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+        }
     }
 
-    public static int v(String tag, String msg) {
-        int res = 0;
-
-        if (null == tag || null == msg) {
-            return 0;
-        }
-        if (GetLogLevel() > LOG_VERBOSE) {
-            return 0;
-        }
-
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg);
-
-        }
-
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.VERBOSE, tag, msg);
-        }
-        return res;
+    public static void w(String msg) {
+        w(null, msg);
     }
 
-    public static int v(String tag, String msg, Throwable tr) {
-        int res = 0;
-
-        if (null == tag || null == msg) {
-            return 0;
-        }
-        if (GetLogLevel() > LOG_VERBOSE) {
-            return 0;
-        }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg + "\n" + android.util.Log.getStackTraceString(tr));
-
-        }
-
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.VERBOSE, tag, msg + '\n' + getStackTraceString(tr));
-        }
-        return res;
+    public static void w(String tag, String msg) {
+        w(tag, msg, null);
     }
 
-    public static int d(String tag, String msg) {
-
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
+    public static void w(String tag, String msg, Throwable tr) {
+        if (null == msg || getLogLevel() > LOG_WARNING) {
+            return;
         }
-        if (GetLogLevel() > LOG_DEBUG) {
-            return 0;
+        if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
+            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg);
-
+        if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
+            android.util.Log.println(android.util.Log.WARN, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
-
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.DEBUG, tag, msg);
-        }
-        return res;
     }
 
-    public static int d(String tag, String msg, Throwable tr) {
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
-        }
-        if (GetLogLevel() > LOG_DEBUG) {
-            return 0;
-        }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg + "\n" + android.util.Log.getStackTraceString(tr));
-
-        }
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.DEBUG, tag, msg + '\n' + getStackTraceString(tr));
-        }
-        return res;
+    public static void e(String msg) {
+        e(null, msg);
     }
 
-    public static int i(String tag, String msg) {
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
-        }
-        if (GetLogLevel() > LOG_INFO) {
-            return 0;
-        }
-
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg);
-
-        }
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.INFO, tag, msg);
-        }
-        return res;
+    public static void e(String tag, String msg) {
+        e(tag, msg, null);
     }
 
-    public static int i(String tag, String msg, Throwable tr) {
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
+    public static void e(String tag, String msg, Throwable tr) {
+        if (null == msg || getLogLevel() > LOG_ERROR) {
+            return;
         }
-        if (GetLogLevel() > LOG_INFO) {
-            return 0;
+        if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
+            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg + "\n" + android.util.Log.getStackTraceString(tr));
-
+        if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
+            android.util.Log.println(android.util.Log.ERROR, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.INFO, tag, msg + '\n' + getStackTraceString(tr));
-        }
-        return res;
     }
 
-    public static int w(String tag, String msg) {
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
-        }
-        if (GetLogLevel() > LOG_WARNING) {
-            return 0;
-        }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg);
-        }
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.WARN, tag, msg);
-        }
-        return res;
+    public static void a(String msg) {
+        a(null, msg);
     }
 
-    public static int w(String tag, Throwable tr) {
-        int res = 0;
-        if (null == tag) {
-            return 0;
+    public static void a(String tag, String msg) {
+        if (null == msg) {
+            return;
         }
-        if (GetLogLevel() > LOG_WARNING) {
-            return 0;
+        if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
+            writeToFile((tag == null ? "" : tag) + "   " + msg);
         }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag);
+
+        if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
+            android.util.Log.println(android.util.Log.ASSERT, tag, msg);
         }
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.WARN, tag, '\n' + getStackTraceString(tr));
-        }
-        return res;
     }
-
-    public static int w(String tag, String msg, Throwable tr) {
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
-        }
-        if (GetLogLevel() > LOG_WARNING) {
-            return 0;
-        }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg + "\n" + android.util.Log.getStackTraceString(tr));
-        }
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.WARN, tag, msg + '\n' + getStackTraceString(tr));
-        }
-        return res;
-    }
-
-    public static int e(String tag, String msg) {
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
-        }
-        if (GetLogLevel() > LOG_ERROR) {
-            return 0;
-        }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg);
-        }
-
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.ERROR, tag, msg);
-        }
-        return res;
-    }
-
-    public static int e(String tag, String msg, Throwable tr) {
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
-        }
-        if (GetLogLevel() > LOG_ERROR) {
-            return 0;
-        }
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg + '\n' + android.util.Log.getStackTraceString(tr));
-        }
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.ERROR, tag, msg + '\n' + getStackTraceString(tr));
-        }
-        return res;
-    }
-
-    public static int a(String tag, String msg) {
-        int res = 0;
-        if (null == tag || null == msg) {
-            return 0;
-        }
-
-        if (TYPE_LOG_TO_FILE == (GetLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile(tag + "   " + msg);
-        }
-
-        if (TYPE_LOG_TO_LOGCAT == (GetLogType() & TYPE_LOG_TO_LOGCAT)) {
-            res = android.util.Log.println(android.util.Log.ASSERT, tag, msg);
-        }
-        return res;
-    }
-
-
 }

@@ -8,11 +8,28 @@ import android.widget.Toast;
 
 import java.lang.ref.SoftReference;
 
+/**
+ * 1.在ui线程中显示Toast，不在ui线程会直接post到ui线程中；
+ * <p>2.重复调用Toast时会覆盖之前的，不用以队列的方式依次显示
+ *
+ * @author tom
+ */
 public class ToastUtil {
     private static Toast toast;
     private static SoftReference<View> viewReference;
 
-    private ToastUtil() {
+    /**
+     * 在UI线程显示短时间的Toast
+     */
+    public static void showShortToast(Context context, CharSequence msg) {
+        TomApplication.runOnUiThread(() -> showToast(context, msg, Toast.LENGTH_SHORT));
+    }
+
+    /**
+     * 在UI线程显示长时间的Toast
+     */
+    public static void showLongToast(Context context, CharSequence msg) {
+        TomApplication.runOnUiThread(() -> showToast(context, msg, Toast.LENGTH_LONG));
     }
 
     @SuppressLint("ShowToast")
@@ -31,19 +48,10 @@ public class ToastUtil {
         return null;
     }
 
-    public static void showShortToast(Context context, CharSequence msg) {
-        showToast(context, msg, Toast.LENGTH_SHORT);
-    }
-
-
-    public static void showLongToast(Context context, CharSequence msg) {
-        showToast(context, msg, Toast.LENGTH_LONG);
-    }
-
     private static void showToast(Context context, CharSequence msg,
                                   int duration) {
         try {
-            getToast(context);
+            Toast toast = getToast(context);
             if (toast == null) {
                 return;
             }
@@ -55,4 +63,5 @@ public class ToastUtil {
             e.printStackTrace();
         }
     }
+
 }
