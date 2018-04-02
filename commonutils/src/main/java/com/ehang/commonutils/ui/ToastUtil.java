@@ -12,7 +12,7 @@ import java.lang.ref.SoftReference;
  * 1.在ui线程中显示Toast，不在ui线程会直接post到ui线程中；
  * <p>2.重复调用Toast时会覆盖之前的，不用以队列的方式依次显示
  *
- * @author tom
+ * @author tom 2018/04/02
  */
 public class ToastUtil {
     private static Toast toast;
@@ -21,15 +21,15 @@ public class ToastUtil {
     /**
      * 在UI线程显示短时间的Toast
      */
-    public static void showShortToast(Context context, CharSequence msg) {
-        TomApplication.runOnUiThread(() -> showToast(context, msg, Toast.LENGTH_SHORT));
+    public static void showShortToast(CharSequence msg) {
+        TomApplication.runOnUiThread(() -> showToast(TomApplication.getContext(), msg, Toast.LENGTH_SHORT));
     }
 
     /**
      * 在UI线程显示长时间的Toast
      */
-    public static void showLongToast(Context context, CharSequence msg) {
-        TomApplication.runOnUiThread(() -> showToast(context, msg, Toast.LENGTH_LONG));
+    public static void showLongToast(CharSequence msg) {
+        TomApplication.runOnUiThread(() -> showToast(TomApplication.getContext(), msg, Toast.LENGTH_LONG));
     }
 
     @SuppressLint("ShowToast")

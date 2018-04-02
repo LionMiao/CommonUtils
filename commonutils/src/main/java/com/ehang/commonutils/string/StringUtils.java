@@ -1305,9 +1305,8 @@ public final class StringUtils {
      * 否则保留小数点后两位并加上对应的单位（MB\GB\TB）
      *
      * @param value 实际容量，以byte为单位
-     * @return
      */
-    public final static String formatFileSize(float value) {
+    public static String formatFileSize(float value) {
         String strResult = "0KB";
         if (value - PRICISION > 0) {
             double dValue = (double) value / TRAFFIC_FEED_RATE;
