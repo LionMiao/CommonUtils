@@ -15,7 +15,8 @@ import java.lang.ref.SoftReference;
  * 通用的Application,包含以下功能
  * <p>1.管理、获取当前处于顶层的Activity
  * <p>2.获取应用上下文
- * Created by tom on 2018/3/29.
+ *
+ * @author tom
  */
 
 public class TomApplication extends Application {
