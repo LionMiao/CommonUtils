@@ -1,14 +1,14 @@
-package com.ehang.commonutils.widget.mrecyclerview;
+package com.ehang.commonutils.ui.mrecyclerview;
 
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * 通用的viewHolder
- * Created by KwokSiuWang on 2017/9/24.
+ * 用于DataBinding的RecycleView ViewHolder。
+ *
+ * @author Guoshaohong
  */
-
 class BaseRecycleViewHolder extends RecyclerView.ViewHolder {
     private ViewDataBinding binding;
 
