@@ -17,6 +17,7 @@ import java.lang.ref.SoftReference;
  * <p>2.获取应用上下文
  *
  * @author tom
+ * @date 2018/04/03 10:02
  */
 
 public class TomApplication extends Application {

@@ -14,8 +14,8 @@ package com.ehang.commonutils.io;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-
 
 import com.ehang.commonutils.ReflectionHelper;
 import com.ehang.commonutils.exception.NullArgumentException;
@@ -45,6 +45,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * <b>文件相关的所有操作</b>
@@ -1042,4 +1043,20 @@ public final class FileUtils {
         ReflectionHelper.invokeObjectMethod(fileUtils, "setPermissions", new Class[]{String.class, Integer.class, Integer.class, Integer.class}, new Object[]{name, perms, -1, -1});
     }
 
+    /**
+     * 解析properties文件
+     *
+     * @return Properties对象，解析失败时返回null
+     */
+    @Nullable
+    public static Properties parseProperties(File file) {
+        Properties props = new Properties();
+        try {
+            props.load(new FileInputStream(file));
+            return props;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

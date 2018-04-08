@@ -96,7 +96,7 @@ public class Log {
             return;
         }
         if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
             android.util.Log.println(android.util.Log.VERBOSE, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
@@ -116,7 +116,7 @@ public class Log {
             return;
         }
         if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
             android.util.Log.println(android.util.Log.DEBUG, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
@@ -136,7 +136,7 @@ public class Log {
             return;
         }
         if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
             android.util.Log.println(android.util.Log.INFO, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
@@ -156,7 +156,7 @@ public class Log {
             return;
         }
         if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
             android.util.Log.println(android.util.Log.WARN, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
@@ -165,6 +165,14 @@ public class Log {
 
     public static void e(String msg) {
         e(null, msg);
+    }
+
+    public static void e(Throwable tr) {
+        e(null, android.util.Log.getStackTraceString(tr));
+    }
+
+    public static void e(String msg, Throwable tr) {
+        e(null, msg, tr);
     }
 
     public static void e(String tag, String msg) {
@@ -176,7 +184,7 @@ public class Log {
             return;
         }
         if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile((tag == null ? "" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
             android.util.Log.println(android.util.Log.ERROR, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
@@ -192,7 +200,7 @@ public class Log {
             return;
         }
         if (TYPE_LOG_TO_FILE == (getLogType() & TYPE_LOG_TO_FILE)) {
-            writeToFile((tag == null ? "" : tag) + "   " + msg);
+            writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg);
         }
 
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {

@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 public final class ReflectionHelper {
 	
 	// FIXME: -1也不是很好的做啊，不过不想加异常怀疑代码会增大，需要的时候改抛异常吧。
-	public final static int INVALID_VALUE = -1;  
+	public final static int INVALID_VALUE = -1;
 
     /**
      * 通过构造器取得实例

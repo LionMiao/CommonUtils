@@ -4,10 +4,15 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.ehang.commonutils.io.FileUtils;
+import com.ehang.commonutils.ui.TomApplication;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -22,5 +27,10 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.ehang.commonutils.test", appContext.getPackageName());
+    }
+
+    @Test
+    public void testProperties() {
+        FileUtils.parseProperties(new File(InstrumentationRegistry.getTargetContext().getFilesDir(), "abc"));
     }
 }

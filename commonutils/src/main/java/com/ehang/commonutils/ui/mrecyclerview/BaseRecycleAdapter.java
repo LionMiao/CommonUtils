@@ -14,6 +14,7 @@ import java.util.List;
  * RecycleView + DataBinding的基础adapter。
  *
  * @author Guoshaohong
+ * @date 2018/04/03 12:03
  */
 public class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseRecycleViewHolder> {
     /**
