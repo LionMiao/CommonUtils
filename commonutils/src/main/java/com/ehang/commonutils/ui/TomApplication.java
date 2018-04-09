@@ -74,7 +74,7 @@ public class TomApplication extends Application {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
+                topActivity = activity;
             }
 
             @Override
