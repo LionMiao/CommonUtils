@@ -99,7 +99,7 @@ public class Log {
             writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
-            android.util.Log.println(android.util.Log.VERBOSE, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            android.util.Log.println(android.util.Log.VERBOSE, tag == null ? "CommonUtils" : tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
     }
 
@@ -119,7 +119,7 @@ public class Log {
             writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
-            android.util.Log.println(android.util.Log.DEBUG, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            android.util.Log.println(android.util.Log.DEBUG, tag == null ? "CommonUtils" : tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
     }
 
@@ -139,7 +139,7 @@ public class Log {
             writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
-            android.util.Log.println(android.util.Log.INFO, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            android.util.Log.println(android.util.Log.INFO, tag == null ? "CommonUtils" : tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
     }
 
@@ -159,7 +159,7 @@ public class Log {
             writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
-            android.util.Log.println(android.util.Log.WARN, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            android.util.Log.println(android.util.Log.WARN, tag == null ? "CommonUtils" : tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
     }
 
@@ -187,7 +187,7 @@ public class Log {
             writeToFile((tag == null ? "CommonUtils" : tag) + "   " + msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
-            android.util.Log.println(android.util.Log.ERROR, tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
+            android.util.Log.println(android.util.Log.ERROR, tag == null ? "CommonUtils" : tag, msg + (tr == null ? "" : ("\n" + android.util.Log.getStackTraceString(tr))));
         }
     }
 
@@ -204,7 +204,7 @@ public class Log {
         }
 
         if (TYPE_LOG_TO_LOGCAT == (getLogType() & TYPE_LOG_TO_LOGCAT)) {
-            android.util.Log.println(android.util.Log.ASSERT, tag, msg);
+            android.util.Log.println(android.util.Log.ASSERT, tag == null ? "CommonUtils" : tag, msg);
         }
     }
 }
