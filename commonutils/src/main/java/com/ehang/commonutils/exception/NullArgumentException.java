@@ -1,10 +1,3 @@
-/*
- *  Copyright (C) 2005-2012 UCWEB Corporation. All rights reserved
- *  Creation    :${DATE}
- *  Author      : miaozh@ucweb.com
- *  History     : Creation,${DATE}, miaozh, Create the file
- */
-
 package com.ehang.commonutils.exception;
 
 /**
