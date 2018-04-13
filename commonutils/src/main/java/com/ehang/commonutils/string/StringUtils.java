@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
  */
 public final class StringUtils {
     private static final String TIME_FORMAT_STRING = "yyyy-MM-dd HH:mm:ss.FFF";
+    private static final String SIMPLE_TIME_FORMAT_STRING = "mm:ss";
 
     /**
      * 判断数组是否为空，null或者长度为0都为空
@@ -1333,6 +1334,17 @@ public final class StringUtils {
     @SuppressLint("SimpleDateFormat")
     public static String formatTime(long time) {
         return new SimpleDateFormat(TIME_FORMAT_STRING).format(time);
+    }
+
+    /**
+     * long型时间转成格式化字符串，只显示分秒。
+     *
+     * @param time 大多数情况下应为{@link System#currentTimeMillis()}
+     * @return {@link StringUtils#TIME_FORMAT_STRING}格式化以后的时间如21:23
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String formatSimpleTime(long time) {
+        return new SimpleDateFormat(SIMPLE_TIME_FORMAT_STRING).format(time);
     }
 
     /**
