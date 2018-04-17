@@ -11,8 +11,11 @@ import com.ehang.commonutils.ui.TomApplication;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 /**
@@ -25,7 +28,7 @@ public class DebugLogger {
      * 默认的文件路径
      */
     @SuppressWarnings("ConstantConditions")
-    private String mLogPath = TomApplication.getContext().getExternalFilesDir("log").getAbsolutePath();
+    private String mLogPath = TomApplication.getContext().getExternalFilesDir("log").getAbsolutePath() + "/";
     /**
      * 默认的文件名
      */
@@ -45,6 +48,7 @@ public class DebugLogger {
 
     public DebugLogger() {
         mLogList = new ArrayList<>();
+        mLogFileName = "log_" + new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date()) + ".txt";
     }
 
     /**

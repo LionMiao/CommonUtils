@@ -5,7 +5,6 @@
  */
 package com.ehang.commonutils.string;
 
-import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import com.ehang.commonutils.codec.CodecUtil;
@@ -19,6 +18,7 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -575,7 +575,7 @@ public final class StringUtils {
                 case 6: // '\006'
                 case 7: // '\007'
                     index++;
-                /* ch[chIndex++] = (char) i; */
+                    /* ch[chIndex++] = (char) i; */
                     aBuffer.append((char) i);
                     break;
 
@@ -588,7 +588,7 @@ public final class StringUtils {
                     if (((byte0 = bytes[index - 1]) & 0xc0) != 128) {
                         return aBuffer.length();
                     }
-                /* ch[chIndex++] = (char) ((i & 0x1f) << 6 | byte0 & 0x3f); */
+                    /* ch[chIndex++] = (char) ((i & 0x1f) << 6 | byte0 & 0x3f); */
                     aBuffer.append((char) ((i & 0x1f) << 6 | byte0 & 0x3f));
                     break;
 
@@ -601,10 +601,10 @@ public final class StringUtils {
                     if ((byte1 & 0xc0) != 128 || (byte2 & 0xc0) != 128) {
                         return aBuffer.length();
                     }
-                /*
-                 * ch[chIndex++] = (char) ((i & 0xf) << 12 | (byte1 & 0x3f) << 6
-                 * | (byte2 & 0x3f) << 0);
-                 */
+                    /*
+                     * ch[chIndex++] = (char) ((i & 0xf) << 12 | (byte1 & 0x3f) << 6
+                     * | (byte2 & 0x3f) << 0);
+                     */
                     aBuffer.append((char) ((i & 0xf) << 12 | (byte1 & 0x3f) << 6 | (byte2 & 0x3f) << 0));
                     break;
 
@@ -1331,9 +1331,8 @@ public final class StringUtils {
      * @param time 大多数情况下应为{@link System#currentTimeMillis()}
      * @return {@link StringUtils#TIME_FORMAT_STRING}格式化以后的时间如2018-04-02 11:21:23:850
      */
-    @SuppressLint("SimpleDateFormat")
     public static String formatTime(long time) {
-        return new SimpleDateFormat(TIME_FORMAT_STRING).format(time);
+        return new SimpleDateFormat(TIME_FORMAT_STRING, Locale.CHINA).format(time);
     }
 
     /**
@@ -1342,9 +1341,8 @@ public final class StringUtils {
      * @param time 大多数情况下应为{@link System#currentTimeMillis()}
      * @return {@link StringUtils#TIME_FORMAT_STRING}格式化以后的时间如21:23
      */
-    @SuppressLint("SimpleDateFormat")
     public static String formatSimpleTime(long time) {
-        return new SimpleDateFormat(SIMPLE_TIME_FORMAT_STRING).format(time);
+        return new SimpleDateFormat(SIMPLE_TIME_FORMAT_STRING, Locale.CHINA).format(time);
     }
 
     /**
