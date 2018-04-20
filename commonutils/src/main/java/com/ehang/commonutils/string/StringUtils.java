@@ -1341,8 +1341,10 @@ public final class StringUtils {
      * @param time 大多数情况下应为{@link System#currentTimeMillis()}
      * @return {@link StringUtils#TIME_FORMAT_STRING}格式化以后的时间如21:23
      */
-    public static String formatSimpleTime(long time) {
-        return new SimpleDateFormat(SIMPLE_TIME_FORMAT_STRING, Locale.CHINA).format(time);
+    public static String formatSimpleTime(int time) {
+        int minutes = time / 60;
+        int seconds = time % 60;
+        return (minutes < 10 ? ("0" + minutes) : minutes) + ":" + (seconds < 10 ? ("0" + seconds) : seconds);
     }
 
     /**
