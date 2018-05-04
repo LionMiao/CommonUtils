@@ -101,7 +101,7 @@ public class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseRecycleViewH
      *
      * @param <T> 和adapter相同的数据类型。
      */
-    interface OnItemClickListener<T> {
+    public interface OnItemClickListener<T> {
         /**
          * 当选项被点击时，调用此方法。
          *
