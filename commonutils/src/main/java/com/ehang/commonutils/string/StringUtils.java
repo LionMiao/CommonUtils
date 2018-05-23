@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * <p/>
  */
 public final class StringUtils {
-    private static final String TIME_FORMAT_STRING = "yyyy-MM-dd HH:mm:ss.FFF";
+    private static final String TIME_FORMAT_STRING = "yyyy-MM-dd HH:mm:ss.SSS";
     private static final String SIMPLE_TIME_FORMAT_STRING = "mm:ss";
 
     /**

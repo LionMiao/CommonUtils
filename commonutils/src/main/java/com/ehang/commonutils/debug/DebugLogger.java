@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.ehang.commonutils.codec.CodecUtil;
 import com.ehang.commonutils.exception.ExceptionHandler;
 import com.ehang.commonutils.io.FileUtils;
-import com.ehang.commonutils.string.StringUtils;
 import com.ehang.commonutils.ui.TomApplication;
 
 import java.io.File;
@@ -102,7 +101,7 @@ public class DebugLogger {
         if (null == msg) {
             return;
         }
-        String prefix = StringUtils.formatTime(System.currentTimeMillis());
+        String prefix = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS ", Locale.CHINA).format(System.currentTimeMillis());
         mLogList.add(prefix + msg);
         if (mMaxLinesCount > 0 && mLogList.size() >= mMaxLinesCount) {
             flush();
