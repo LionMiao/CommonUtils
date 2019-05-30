@@ -2,7 +2,7 @@ package com.ehang.commonutils.system;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 
 import com.ehang.commonutils.ui.TomApplication;
 

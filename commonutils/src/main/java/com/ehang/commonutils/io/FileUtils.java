@@ -14,7 +14,7 @@ package com.ehang.commonutils.io;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.ehang.commonutils.ReflectionHelper;
