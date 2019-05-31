@@ -9,6 +9,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import androidx.annotation.RequiresPermission;
 
+import androidx.annotation.RequiresPermission;
+
 import com.ehang.commonutils.debug.Log;
 import com.ehang.commonutils.ui.TomApplication;
 
