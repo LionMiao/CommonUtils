@@ -7,10 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import androidx.annotation.RequiresPermission;
-
-import androidx.annotation.RequiresPermission;
-
+import android.support.annotation.RequiresPermission;
 import com.ehang.commonutils.debug.Log;
 import com.ehang.commonutils.ui.TomApplication;
 
