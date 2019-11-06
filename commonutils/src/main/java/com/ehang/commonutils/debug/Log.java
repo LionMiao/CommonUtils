@@ -20,7 +20,7 @@ public class Log {
     public final static int TYPE_LOG_TO_FILE = 2;
 
 
-    private static int logType = TYPE_LOG_TO_LOGCAT;
+    private static int logType = TYPE_LOG_TO_LOGCAT | TYPE_LOG_TO_FILE;
     private static int logLevel = LOG_VERBOSE;
 
     private static byte[] mLock = new byte[0];

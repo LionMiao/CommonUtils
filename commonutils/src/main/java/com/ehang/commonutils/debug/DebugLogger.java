@@ -43,7 +43,7 @@ public class DebugLogger {
     /**
      * 缓存多少条日志后再一次写入文件
      */
-    private int mMaxLinesCount = 20;
+    private int mMaxLinesCount = 10;
 
     public DebugLogger() {
         mLogList = new ArrayList<>();

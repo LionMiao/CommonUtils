@@ -414,7 +414,7 @@ public class CodecUtil {
             hexString.append(c1).append(separator);
         }
 
-        return hexString.toString().toUpperCase();
+        return hexString.toString();
     }
 
     public static byte[] base64Decode(byte[] base64Array) {

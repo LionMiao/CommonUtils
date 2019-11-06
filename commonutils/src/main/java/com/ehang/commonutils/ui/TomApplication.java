@@ -70,6 +70,17 @@ public class TomApplication extends Application {
         }
     }
 
+    /**
+     * 强制在主线程执行操作
+     *
+     * @param runnable 待执行的操作
+     */
+    public static void runOnUiThreadDelay(Runnable runnable, long delay) {
+        if (runnable != null) {
+            mHandler.postDelayed(runnable, delay);
+        }
+    }
+
     private void registerTopActivityChangedListener() {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
