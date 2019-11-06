@@ -17,6 +17,7 @@ import android.content.res.AssetManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+
 import com.ehang.commonutils.ReflectionHelper;
 import com.ehang.commonutils.exception.NullArgumentException;
 import com.ehang.commonutils.string.StringUtils;
@@ -1052,7 +1053,9 @@ public final class FileUtils {
     public static Properties parseProperties(File file) {
         Properties props = new Properties();
         try {
-            props.load(new FileInputStream(file));
+            FileInputStream f = new FileInputStream(file);
+            props.load(f);
+            f.close();
             return props;
         } catch (IOException e) {
             e.printStackTrace();

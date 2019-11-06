@@ -1,20 +1,10 @@
 package com.ehang.commonutils.system;
 
-import android.support.annotation.NonNull;
+import com.ehang.commonutils.debug.Log;
 
-import com.ehang.commonutils.ui.TomApplication;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
 
 /**
  * 获取地区信息的工具类。
@@ -32,42 +22,26 @@ public class AreaMsgUtil {
         if (callback == null) {
             return;
         }
-        new Thread(() -> {
-            String url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json";
-            OkHttpClient okHttpClient = new OkHttpClient.Builder()//设置超时，不设置可能会报异常
-                    .connectTimeout(30, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS)
-                    .build();
-            Request.Builder requestBuilder = new Request.Builder();
-            requestBuilder
-                    .url(url)
-                    .method("GET", null);
-            Call call = okHttpClient.newCall(requestBuilder.build());
-            okHttpClient.newCall(call.request()).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    TomApplication.runOnUiThread(() -> callback.onFail(e.toString()));
-                }
 
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    try {
-                        JSONObject object = new JSONObject(response.body().string());
-                        TomApplication.runOnUiThread(() -> {
-                            try {
-                                callback.onSuccess(object.getString("country"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        callback.onFail(e.toString());
-                    }
-                }
-            });
-        }).start();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://int.dpool.sina.com.cn/iplookup/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AreaMsgService areaMsgService = retrofit.create(AreaMsgService.class);
+        areaMsgService.getAreaMsg().enqueue(new retrofit2.Callback<AreaMsg>() {
+            @Override
+            public void onResponse(retrofit2.Call<AreaMsg> call, retrofit2.Response<AreaMsg> response) {
+                Log.d("AreaMsgUtil", "get area msg: " + response.body().toString());
+                callback.onSuccess(response.body().country);
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<AreaMsg> call, Throwable t) {
+                Log.d("AreaMsgUtil", "get area msg: " + t.toString());
+                callback.onFail(t.toString());
+            }
+        });
     }
 
     /**
@@ -87,5 +61,23 @@ public class AreaMsgUtil {
          * @param error 失败原因。
          */
         void onFail(String error);
+    }
+
+    private interface AreaMsgService {
+        @GET("iplookup.php?format=json")
+        retrofit2.Call<AreaMsg> getAreaMsg();
+    }
+
+    private class AreaMsg {
+        private String country;
+        private String province;
+        private String city;
+        private String district;
+        private String type;
+
+        @Override
+        public String toString() {
+            return "地区信息：\n" + "country = " + country + "\nprovince" + province + "\ncity = " + city;
+        }
     }
 }

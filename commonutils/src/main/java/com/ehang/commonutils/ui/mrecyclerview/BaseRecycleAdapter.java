@@ -1,5 +1,6 @@
 package com.ehang.commonutils.ui.mrecyclerview;
 
+
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
