@@ -18,6 +18,10 @@ import com.ehang.commonutils.exception.ExceptionHandler;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.DeflaterOutputStream;
@@ -389,19 +393,45 @@ public class CodecUtil {
         return result;
     }
 
-    public static String MD5(byte[] bytes) {
+    public static String md5(byte[] bytes) {
         try {
             if (bytes == null) {
                 return null;
             }
-            MessageDigest algorithm = MessageDigest.getInstance("MD5");
+            MessageDigest algorithm = MessageDigest.getInstance("md5");
             algorithm.reset();
             algorithm.update(bytes);
-            return toHexString(algorithm.digest(), "");
+            return toHexString(algorithm.digest(), "").toLowerCase();
         } catch (NoSuchAlgorithmException e) {
             ExceptionHandler.processFatalException(e);
         }
 
+        return null;
+    }
+
+    public static String md5(File file) {
+        try {
+            if (file == null) {
+                return null;
+            }
+            MessageDigest algorithm = MessageDigest.getInstance("md5");
+            algorithm.reset();
+            try {
+                byte[] bytes = new byte[10240];
+                InputStream inputStream = new FileInputStream(file);
+                int length;
+                while ((length = inputStream.read(bytes)) != -1) {
+                    algorithm.update(bytes, 0, length);
+                }
+                inputStream.close();
+                return toHexString(algorithm.digest(), "").toLowerCase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (NoSuchAlgorithmException e) {
+            ExceptionHandler.processFatalException(e);
+        }
         return null;
     }
 
