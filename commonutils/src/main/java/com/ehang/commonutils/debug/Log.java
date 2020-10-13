@@ -63,6 +63,7 @@ public class Log {
         return logLevel;
     }
 
+
     /**
      * 设置日志路径和日志文件名
      */
@@ -71,6 +72,15 @@ public class Log {
             mLogger = new DebugLogger();
         }
         mLogger.setLogPathAndFileName(path, fileName);
+    }
+
+    /**
+     * 马上把日志写到文件中。
+     */
+    public synchronized static void flush() {
+        if (null != mLogger) {
+            mLogger.flush();
+        }
     }
 
     /**
