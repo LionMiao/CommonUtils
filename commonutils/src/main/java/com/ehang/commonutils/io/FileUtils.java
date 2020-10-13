@@ -12,9 +12,17 @@
  */
 package com.ehang.commonutils.io;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
 
 
@@ -47,6 +55,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * <b>文件相关的所有操作</b>
@@ -1062,4 +1071,24 @@ public final class FileUtils {
         }
         return null;
     }
+
+    /**
+     *
+     */
+    public static void installApk(Context context, File apkFile) {
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_VIEW);
+//        intent.addCategory(Intent.CATEGORY_DEFAULT);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+//        context.startActivity(intent);
+        Intent intentInstall = new Intent();
+        intentInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentInstall.setAction(Intent.ACTION_VIEW);
+        Uri uri = FileProvider.getUriForFile(context, "com.ehang.videochat.fileprovider", apkFile);
+        intentInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intentInstall.setDataAndType(uri, "application/vnd.android.package-archive");
+        context.startActivity(intentInstall);
+    }
+
 }

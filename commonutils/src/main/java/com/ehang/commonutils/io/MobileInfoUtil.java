@@ -6,6 +6,7 @@ package com.ehang.commonutils.io;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import com.ehang.commonutils.ui.TomApplication;
@@ -17,6 +18,9 @@ import com.ehang.commonutils.ui.TomApplication;
  */
 @SuppressLint("MissingPermission")
 public class MobileInfoUtil {
+    public static String getUniqueCode() {
+        return Settings.System.getString(TomApplication.getContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+    }
 
     /**
      * 获取手机IMEI
