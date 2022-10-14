@@ -44,6 +44,7 @@ public class DebugLogger {
      * 缓存多少条日志后再一次写入文件
      */
     private int mMaxLinesCount = 10;
+    private final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
 
     public DebugLogger() {
         mLogList = new ArrayList<>();
@@ -101,7 +102,7 @@ public class DebugLogger {
         if (null == msg) {
             return;
         }
-        String prefix = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS ", Locale.CHINA).format(System.currentTimeMillis());
+        String prefix = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND) + "." + calendar.get(Calendar.MILLISECOND);
         mLogList.add(prefix + msg);
         if (mMaxLinesCount > 0 && mLogList.size() >= mMaxLinesCount) {
             flush();
