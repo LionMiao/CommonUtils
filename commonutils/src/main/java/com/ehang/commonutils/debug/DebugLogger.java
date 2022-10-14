@@ -12,11 +12,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map.Entry;
-
+import java.util.TimeZone;
 /**
  * 保存字符串、byte数组、或者HashMap到文件中，自定义缓存的日志数量，待超过缓存条数时会自动写入文件。
  *
